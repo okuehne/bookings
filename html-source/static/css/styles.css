@@ -1,0 +1,23 @@
+.my-footer {
+    background-color: #163b65;
+    color: #fff;
+    margin-top: 1.5em;
+    height: 5em;
+    padding: 1em;
+    font-size: 80%;
+}
+
+.redText {
+    color: red;
+}
+
+.notie-container {
+    box-shadow: none;
+}
+
+.datepicker {
+    z-index: 10000;
+}
+.swal2-html-container {
+    overflow: unset !important;
+}
