@@ -1,0 +1,101 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-lg-3">
+                <img src="static/images/generals-quarters.png" alt="Room Image" class="img-fluid img-thumbnail mx-auto d-block">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-4">General's Quarters</h1>
+                <p>
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col text-center">
+                <a class="btn btn-success" href="#!" id="check-availability-button">
+                    Check Availbability
+                </a>
+            </div>
+        </div>
+    </div>
+{{end}}
+
+
+{{define "js"}}
+<script>
+    document.getElementById("check-availability-button").addEventListener('click', function (e) {
+
+        let html = `
+            <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-row" id="reservation-dates-modal">
+                            <div class="col">
+                                <input disabled required type="text" class="form-control" name="start" id="start" placeholder="Arrival">
+                            </div>
+                            <div class="col">
+                                <input disabled required type="text" class="form-control" name="end" id="end" placeholder="Departure">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        `;
+
+        console.log('click custome')
+        // notifyModal("title", "<em>hello, world</em>", "success", "My for the button")
+        attention.custom({
+            title: "Choose your date",
+            msg: html,
+            willOpen: () => {
+                const elem = document.getElementById("reservation-dates-modal");
+                const rp = new DateRangePicker(elem, {
+                    format: "yyyy-mm-dd",
+                    buttonClass: 'btn',
+                    showOnFocus: false,
+                    orientation: "top"
+                });
+            },
+            didOpen: () => {
+                document.getElementById("start").removeAttribute("disabled");
+                document.getElementById("end").removeAttribute("disabled");
+            },
+            preConfirm: () => {
+                return [
+                    document.getElementById('start').value,
+                    document.getElementById('end').value
+                ]
+            },
+            callback : function (result) {
+                console.log(result)
+
+                let form = document.getElementById("check-availability-form");
+                let formData = new FormData(form)
+                formData.append("csrf_token", "{{.CSRFToken}}")
+
+                fetch('/search-availability-json', {
+                    method: "post",
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                    })
+            }
+        });
+    })
+</script>
+{{end}}

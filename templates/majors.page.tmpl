@@ -1,0 +1,68 @@
+{{template "base" .}}
+
+{{define "content"}}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 offset-lg-3">
+                <img src="static/images/marjors-suite.png" alt="Room Image" class="img-fluid img-thumbnail mx-auto d-block">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mt-4">Major's Suite</h1>
+                <p>
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                    Your home is away from home, set on the majestic waters of the Atlantic Ocean, this will be a vactation to remember
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col text-center">
+
+                <a class="btn btn-success" href="#!" id="check-availability-button">
+                    Check Availbability
+                </a>
+
+            </div>
+        </div>
+
+
+
+    </div>
+{{end}}
+
+{{define "js"}}
+    <script>
+        document.getElementById("check-availability-button").addEventListener('click', function (e) {
+
+            let html = `
+            <form id="check-availabitity-form" action="" method="post" novalidate class="needs-validation">
+                <div class="form-row">
+                    <div class="col">
+                        <div class="form-row" id="reservation-dates-modal">
+                            <div class="col">
+                                <input disabled required type="text" class="form-control" name="start" id="start" placeholder="Arrival">
+                            </div>
+                            <div class="col">
+                                <input disabled required type="text" class="form-control" name="end" id="end" placeholder="Departure">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        `;
+
+            console.log('click custome')
+            // notifyModal("title", "<em>hello, world</em>", "success", "My for the button")
+            attention.custom({title: "Choose your date", msg: html});
+        })
+    </script>
+{{end}}
