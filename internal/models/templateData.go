@@ -1,5 +1,7 @@
 package models
 
+import "github.com/okuehne/bookings/internal/forms"
+
 // TemplateData holds data sent from
 type TemplateData struct {
 	StringMap map[string]string
@@ -8,6 +10,7 @@ type TemplateData struct {
 	Data      map[string]any
 	CSRFToken string
 	Flash     string
-	Warining  string
+	Warning   string
 	Error     string
+	Form      *forms.From
 }

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"github.com/okuehne/bookings/internal/config"
 	"github.com/okuehne/bookings/internal/handlers"
+	"github.com/okuehne/bookings/internal/models"
 	"github.com/okuehne/bookings/internal/render"
 	"log"
 	"net/http"
@@ -18,7 +20,27 @@ const portNumber = ":8080"
 
 // main is the main application function
 func main() {
+	err := run()
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
+
+	srv := &http.Server{
+		Addr:    portNumber,
+		Handler: routes(&app),
+	}
+	err = srv.ListenAndServe()
+	log.Fatal(err)
+}
+
+func run() error {
+
+	// what am i going to put in the session
+	gob.Register(models.Reservation{})
+
+	// change this to true when in production
 	app.InProduction = false
 
 	session = scs.New()
@@ -33,6 +55,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal("cannot create template cache")
+		return err
 	}
 
 	app.TemplateCache = tc
@@ -41,13 +64,5 @@ func main() {
 	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
 	render.NewTemplates(&app)
-
-	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
-
-	srv := &http.Server{
-		Addr:    portNumber,
-		Handler: routes(&app),
-	}
-	err = srv.ListenAndServe()
-	log.Fatal(err)
+	return nil
 }
