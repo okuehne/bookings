@@ -4,10 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/okuehne/bookings/internal/config"
+	"github.com/okuehne/bookings/internal/driver"
 	"github.com/okuehne/bookings/internal/forms"
 	"github.com/okuehne/bookings/internal/helpers"
 	"github.com/okuehne/bookings/internal/models"
 	"github.com/okuehne/bookings/internal/render"
+	"github.com/okuehne/bookings/internal/repository"
+	"github.com/okuehne/bookings/internal/repository/dbrepo"
 	"net/http"
 )
 
@@ -17,12 +20,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo crate a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
